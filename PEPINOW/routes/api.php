@@ -25,19 +25,17 @@ use App\Http\Controllers\CategoryController;
 
 Route::post('/register',[UserController::class,'register']);
 Route::post('/login',[UserController::class,'login']);
-Route::post('/logout',[UserController::class,'logout']);
-Route::post('/update/{id}',[UserController::class,'update']);
-Route::post('/destroy/{id}',[UserController::class,'destroy']);
-route::get('/showplants',[PlantController::class,'index']);
-route::get('/showplant/{id}',[PlantController::class,'show']);
-route::post('/newplant',[PlantController::class,'store']);
-route::post('/updateplant/{id}',[PlantController::class,'update']);
-route::post('/remove/{id}',[PlantController::class,'destroy']);
-
-route::get('/showcategories',[CategoryController::class,'index']);
-route::post('/newcat',[CategoryController::class,'store']);
-route::post('/update/{id}',[CategoryController::class,'update']);
-route::post('/delete/{id}',[CategoryController::class,'destroy']);
+// Route::post('/logout',[UserController::class,'logout']);
+// Route::get('/showuser/{id}',[UserController::class,'show']);
+// Route::get('/showusers',[UserController::class,'index']);
+// route::get('/showplants',[PlantController::class,'index']);
+// route::get('/showplant/{id}',[PlantController::class,'show']);
+// route::post('/newplant',[PlantController::class,'store']);
+// route::post('/updateplant/{id}',[PlantController::class,'update']);
+// route::post('/remove/{id}',[PlantController::class,'destroy']);
+// route::post('/newcat',[CategoryController::class,'store']);
+// route::post('/update/{id}',[CategoryController::class,'update']);
+// route::post('/delete/{id}',[CategoryController::class,'destroy']);
 
 
 // route::post('/cat',function(){
@@ -75,6 +73,23 @@ route::post('/delete/{id}',[CategoryController::class,'destroy']);
 //     Route::post('/updateuser/{id}',[UserController::class,'updateuser']);
 // });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware'=>['auth:sanctum']],function () {
+    Route::post('/logout',[UserController::class,'logout']);
+    Route::get('/showuser/{id}',[UserController::class,'show']);
+    Route::get('/showusers',[UserController::class,'index']);
+    Route::post('/updateuser/{id}',[UserController::class,'update']);
+    Route::post('/deleteuser/{id}',[UserController::class,'destroy']);
+
+    route::get('/showplants',[PlantController::class,'index']);
+    route::get('/showplant/{id}',[PlantController::class,'show']);
+    route::post('/newplant',[PlantController::class,'store']);
+    route::post('/updateplant/{id}',[PlantController::class,'update']);
+    route::post('/remove/{id}',[PlantController::class,'destroy']);
+    route::post('/newcat',[CategoryController::class,'store']);
+    route::post('/update/{id}',[CategoryController::class,'update']);
+    route::post('/delete/{id}',[CategoryController::class,'destroy']);
+    route::post('/changerole/{id}',[UserController::class,'changeRole']);
+    route::get('/getcategories',[CategoryController::class,'index']);
+
+
 });

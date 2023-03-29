@@ -9,11 +9,12 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'category'
+        'category',
+        // 'vendeur_id'
     ];
 
-    // public function plants()
-    // {
-    //     return $this->hasMany(Plant::class);
-    // }
+    public function plants()
+    {
+        return $this->hasMany(Plant::class);
+    }
 }

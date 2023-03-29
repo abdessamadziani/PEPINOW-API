@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\CategoryResource;
+
 
 class CategoryController extends Controller
 {
@@ -12,8 +16,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-        return Category::all();
+
+        // dd(auth()->user());
+        if( auth()->user()->hasAnyRole(['admin','vendeur','user'])){
+            return Category::all();
+        }else{
+            return "you dont have permission to do that ";
+        }
+
     }
 
     /**
@@ -30,11 +40,18 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $user = auth()->user();
+        if($user->hasAnyRole(['admin'])){
+
         $this->validate($request,[
             'category'=>'required',
         ]);
 
         return Category::create($request->all());
+        }
+        else{
+            return "you dont have permission to do that ";
+        }
     }
 
     /**
@@ -59,6 +76,10 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $user = auth()->user();
+
+        if($user->hasAnyRole(['admin'])){
+
         $this->validate($request,[
             'category'=>'required',
 
@@ -68,13 +89,26 @@ class CategoryController extends Controller
         return response()->json($cat);
     }
 
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         //
+        $user = auth()->user();
+
+        if($user->hasAnyRole(['admin'])){
+
         $cat=Category::find($id);
         $cat->delete();
+        return response()->json(['message'=>' Category deleted successfully']);
+        }
+        else{
+            abort(403);
+        }
+
     }
 }
